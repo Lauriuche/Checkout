@@ -41,7 +41,6 @@
             text-align: center;
         }
 
-        /* Moldura da Imagem do Produto */
         .product-frame {
             width: 140px;
             height: 140px;
@@ -63,7 +62,7 @@
         }
 
         h2 { font-weight: 800; font-size: 1.6rem; margin-bottom: 5px; letter-spacing: -1px; }
-        .subtitle { color: rgba(255,255,255,0.4); font-size: 0.9rem; margin-bottom: 30px; display: block; }
+        .subtitle { color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-bottom: 30px; display: block; line-height: 1.4; }
 
         .field { text-align: left; margin-bottom: 22px; }
         .label { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: block; text-transform: uppercase; letter-spacing: 1.5px; }
@@ -81,8 +80,46 @@
 
         input:focus { border-color: var(--primary); outline: none; background: rgba(255,255,255,0.06); transform: translateY(-2px); }
 
-        .price-section { margin: 35px 0; }
-        .price-display { font-size: 2.8rem; font-weight: 800; color: #fff; display: block; letter-spacing: -1.5px; }
+        .product-selection-info {
+            margin: 15px 0;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .mini-item-frame {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #111;
+        }
+
+        .mini-item-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-selection-info strong {
+            color: var(--primary);
+            font-weight: 700;
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .price-section { margin: 25px 0; }
+        .price-display { font-size: 2.5rem; font-weight: 800; color: #fff; display: block; letter-spacing: -1px; }
 
         .btn-confirm {
             width: 100%;
@@ -108,28 +145,42 @@
         .footer-secure {
             margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 8px;
             color: rgba(255,255,255,0.3); font-size: 0.75rem; font-weight: 600;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
 <div class="checkout-card">
-    <!-- Visualização da Imagem do Produto -->
     <div class="product-frame">
-        <img id="main_product_img" src="" alt="Produto">
+        <img id="main_logo_img" src="" alt="Marca">
     </div>
 
     <h2 id="store_name">A Carregar...</h2>
-    <span class="subtitle">Processamento Seguro &middot; 2026</span>
+    <span class="subtitle">
+        Pagamento processado por:<br>
+        Cloudwalk Instituição de pagamentos serviços LTDA.<br>
+        ("InfinitePay") CNPJ 18.189.547/0001-42
+    </span>
 
     <div class="field">
-        <label class="label">O Seu Nome</label>
-        <input type="text" id="user_name" placeholder="Ex: Vagner Sousa">
+        <label class="label">Nome completo</label>
+        <input type="text" id="user_name" placeholder="Ex: Vagner Sousa" autocomplete="name">
     </div>
 
     <div class="field">
-        <label class="label">O Seu WhatsApp</label>
-        <input type="tel" id="user_phone" placeholder="(99) 99999-9999">
+        <label class="label">Telefone (WhatsApp)</label>
+        <input type="tel" id="user_phone" placeholder="(00) 0 0000-0000" maxlength="17">
+    </div>
+
+    <div class="product-selection-info" id="product_info_display">
+        <div class="mini-item-frame">
+            <img id="mini_product_img" src="" alt="Produto">
+        </div>
+        <div>
+            <span style="font-size: 0.75rem;">Estás a comprar:</span>
+            <strong id="product_name_text">...</strong>
+        </div>
     </div>
 
     <div class="price-section">
@@ -143,37 +194,70 @@
 
     <div class="footer-secure">
         <i data-lucide="shield-check" size="14"></i>
-        Pagamento via InfinitePay &copy; 2026
+        <span>
+            Direitos reservados a Lauriuche Incompany &copy;<br>
+            Pagamento via InfinitePay &copy; 2026
+        </span>
     </div>
 </div>
 
 <script>
     // ============================================================
-    // ⚙️ CONFIGURAÇÃO RÁPIDA (ALTERA APENAS AQUI)
+    // ⚙️ CONFIGURAÇÃO RÁPIDA (EDITE AQUI)
     // ============================================================
     
     const CONFIG_CHECKOUT = {
         minhaTag: "lauriuche",                  // Teu handle da InfinitePay (sem o $)
-        nomeExibicao: "Vagner Magazine",        // Nome que aparece no topo
-        valorEmCentavos: 100,                   // 100 = R$ 1,00 | 5000 = R$ 50,00
+        nomeExibicao: "Checkout de pagamento",  // Nome que aparece no topo
+        valorEmCentavos: 100000,            // 100 = R$ 1,00 | 100.000.000 = R$ 1.000.000,00
         quantidadePedida: 1,                    // Quantidade fixa
-        descricaoItem: "Produto Premium VM",    // Descrição que o cliente vê no pagamento
-        
-        // LINK DA IMAGEM (Podes usar qualquer link de imagem da internet)
-        urlImagem: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" 
+        descricaoItem: "E-book Exclusivo",      // Nome do produto
+
+        // 🔗 LINK DE REDIRECIONAMENTO (Para onde o cliente vai após pagar)
+        urlRedirecionamento: "https://vagnermagazine.com/sucesso", 
+
+        urlImagemPrincipal: "https://play-lh.googleusercontent.com/JCYKHXuu2Q6IzhmkW9N4bDX0S8_3XVYnlPtheNcdwlOaSr0TTKJljm3RVexsXkw3_ec",
+        urlImagemMini: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&auto=format" 
     };
 
     // ============================================================
 
+    // Formata o número para o padrão R$ 1.234,56
+    const formatarMoeda = (valor) => {
+        return valor.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
-        
-        // Aplicar configurações à página
-        document.getElementById('main_product_img').src = CONFIG_CHECKOUT.urlImagem;
+        document.getElementById('main_logo_img').src = CONFIG_CHECKOUT.urlImagemPrincipal;
+        document.getElementById('mini_product_img').src = CONFIG_CHECKOUT.urlImagemMini;
         document.getElementById('store_name').innerText = CONFIG_CHECKOUT.nomeExibicao;
+        document.getElementById('product_name_text').innerText = CONFIG_CHECKOUT.descricaoItem;
         
         const total = (CONFIG_CHECKOUT.valorEmCentavos * CONFIG_CHECKOUT.quantidadePedida) / 100;
-        document.getElementById('final_price').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        document.getElementById('final_price').innerText = `R$ ${formatarMoeda(total)}`;
+
+        const phoneInput = document.getElementById('user_phone');
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            let formattedValue = '';
+            if (value.length > 0) {
+                formattedValue = '(' + value.substring(0, 2);
+                if (value.length > 2) {
+                    formattedValue += ') ' + value.substring(2, 3);
+                    if (value.length > 3) {
+                        formattedValue += ' ' + value.substring(3, 7);
+                        if (value.length > 7) {
+                            formattedValue += '-' + value.substring(7, 11);
+                        }
+                    }
+                }
+            }
+            e.target.value = formattedValue;
+        });
     });
 
     async function executarCheckout() {
@@ -186,20 +270,20 @@
         btn.disabled = true;
         btn.innerHTML = `<div class="loading-icon"></div> A GERAR LINK...`;
 
-        // Payload completo incluindo a imagem para a InfinitePay
         const payload = {
             "handle": CONFIG_CHECKOUT.minhaTag,
             "order_nsu": "PEDIDO-" + Date.now(),
+            "redirect_url": CONFIG_CHECKOUT.urlRedirecionamento,
             "customer": {
                 "name": nome,
-                "email": `checkout_${Date.now()}@vagnermagazine.com`,
+                "email": `checkout_${Date.now()}@magazine.com`,
                 "phone_number": fone.replace(/\D/g, '')
             },
             "items": [{
                 "quantity": CONFIG_CHECKOUT.quantidadePedida,
                 "price": CONFIG_CHECKOUT.valorEmCentavos,
                 "description": CONFIG_CHECKOUT.descricaoItem,
-                "image": CONFIG_CHECKOUT.urlImagem // <--- AQUI É ONDE A IMAGEM É ENVIADA
+                "image": CONFIG_CHECKOUT.urlImagemMini
             }]
         };
 
@@ -218,7 +302,7 @@
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 setTimeout(() => window.location.href = data.url, 1200);
             } else {
-                alert("Erro ao criar link. Verifica se o teu 'handle' está correto.");
+                alert("Erro ao criar link.");
                 resetarBotao();
             }
         } catch (e) {
@@ -237,4 +321,3 @@
 
 </body>
 </html>
-
