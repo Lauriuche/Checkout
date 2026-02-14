@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Checkout | Vagner Magazine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --primary-dark: #00cc6d;
+            --primary-glow: rgba(0, 255, 136, 0.35);
+            --bg: #050505;
+            --surface: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.02);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(0, 255, 136, 0.08) 0%, transparent 40%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        @keyframes entrance {
+            from { opacity: 0; transform: scale(0.95) translateY(30px); filter: blur(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
+        .checkout-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 45px 40px;
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
+            animation: entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .header { text-align: center; margin-bottom: 45px; }
+        
+        .brand-icon {
+            width: 65px; height: 65px;
+            background: var(--primary);
+            border-radius: 20px;
+            margin: 0 auto 25px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 15px 35px var(--primary-glow);
+            color: #000;
+            transform: rotate(-3deg);
+            transition: 0.5s;
+        }
+        .checkout-card:hover .brand-icon { transform: rotate(0deg) scale(1.05); }
+
+        h2 { font-weight: 800; font-size: 1.75rem; letter-spacing: -1px; margin-bottom: 8px; }
+        .subtitle { color: rgba(255,255,255,0.4); font-size: 0.9rem; font-weight: 500; }
+
+        /* Estilização dos Inputs Profissionais */
+        .field { margin-bottom: 28px; position: relative; }
+        
+        .label {
+            display: block; font-size: 0.75rem; font-weight: 700;
+            color: var(--primary); margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1.5px solid var(--border);
+            padding: 18px 24px;
+            border-radius: 18px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input::placeholder { color: rgba(255,255,255,0.15); }
+
+        input:focus {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 5px rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Rodapé do Checkout */
+        .footer {
+            margin-top: 45px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 35px;
+        }
+
+        .price-label { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-bottom: 8px; display: block; }
+        .price-value { font-size: 2.8rem; font-weight: 800; color: #fff; margin-bottom: 35px; display: block; letter-spacing: -1.5px; }
+
+        /* Botão com Efeito Shimmer */
+        .btn-pay {
+            width: 100%;
+            padding: 22px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 22px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; justify-content: center; gap: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-pay::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(30deg);
+            transition: none;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -60%; }
+            20% { left: 120%; }
+            100% { left: 120%; }
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 40px var(--primary-glow);
+            filter: brightness(1.1);
+        }
+
+        .btn-pay:disabled {
+            background: #222;
+            color: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .secure-tag {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 25px; color: rgba(255,255,255,0.25); font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Animação de Carregamento */
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="checkout-card">
+    <div class="header">
+        <div class="brand-icon"><i data-lucide="zap" size="32" stroke-width="3"></i></div>
+        <h2>Vagner Magazine</h2>
+        <p class="subtitle">Processamento Seguro &middot; 2026</p>
+    </div>
+
+    <!-- Campo Nome -->
+    <div class="field">
+        <label class="label">Nome do Titular</label>
+        <input type="text" id="cust_name" placeholder="Ex: Vagner Lauriuche" autocomplete="name">
+    </div>
+
+    <!-- Campo Telefone com Máscara -->
+    <div class="field">
+        <label class="label">WhatsApp para Comprovante</label>
+        <input type="tel" id="cust_phone" placeholder="(00) 00000-0000" maxlength="15">
+    </div>
+
+    <div class="footer">
+        <span class="price-label">Total a Pagar</span>
+        <span class="price-value">R$ 1,00</span>
+        
+        <button class="btn-pay" id="btnAction" onclick="gerarPagamento()">
+            Pagar com Pix ou Cartão
+            <i data-lucide="arrow-right" size="22"></i>
+        </button>
+
+        <div class="secure-tag">
+            <i data-lucide="shield-check" size="14"></i>
+            Tecnologia InfinitePay &copy; 2026
+        </div>
+    </div>
+</div>
+
+<script>
+    // Iniciar ícones Lucide
+    lucide.createIcons();
+
+    // Máscara de Telefone (Brasil)
+    const phoneInput = document.getElementById('cust_phone');
+    phoneInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length > 11) value = value.slice(0, 11);
+        
+        if (value.length > 10) {
+            value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+        } else if (value.length > 6) {
+            value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+        } else if (value.length > 2) {
+            value = value.replace(/^(\d{2})(\d{0,5}).*/, "($1) $2");
+        } else if (value.length > 0) {
+            value = value.replace(/^(\d*)/, "($1");
+        }
+        e.target.value = value;
+    });
+
+    async function gerarPagamento() {
+        const btn = document.getElementById('btnAction');
+        const nome = document.getElementById('cust_name').value.trim();
+        const fone = document.getElementById('cust_phone').value.trim();
+
+        if (nome.length < 3) {
+            alert("Por favor, informe seu nome completo.");
+            return;
+        }
+
+        // Estágio 1: Carregamento
+        btn.disabled = true;
+        btn.innerHTML = `<div class="loader"></div> Gerando Pedido...`;
+
+        const payload = {
+            "handle": "vagner_lauriuche--inc",
+            "order_nsu": "VM26-" + Date.now(),
+            "customer": {
+                "name": nome,
+                "email": `checkout_${Date.now()}@vagnermagazine.com`,
+                "phone_number": fone.replace(/\D/g, '')
+            },
+            "items": [{
+                "quantity": 1,
+                "price": 100, // R$ 1,00
+                "description": "Pagamento Vagner Magazine"
+            }]
+        };
+
+        const targetUrl = 'https://api.infinitepay.io/invoices/public/checkout/links';
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetUrl);
+
+        try {
+            const response = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.url) {
+                // Estágio 2: Sucesso / Confete
+                btn.innerHTML = `<i data-lucide="check-circle" size="22"></i> Pronto!`;
+                lucide.createIcons();
+                
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#00ff88', '#ffffff', '#00cc6d']
+                });
+
+                // Pequeno atraso para o cliente ver o sucesso
+                setTimeout(() => {
+                    window.location.href = result.url;
+                }, 1200);
+            } else {
+                throw new Error("API Error");
+            }
+        } catch (error) {
+            console.error("Erro:", error);
+            alert("Não foi possível gerar o link de pagamento. Verifique sua conexão.");
+            resetButton();
+        }
+    }
+
+    function resetButton() {
+        const btn = document.getElementById('btnAction');
+        btn.disabled = false;
+        btn.innerHTML = `Pagar com Pix ou Cartão <i data-lucide="arrow-right" size="22"></i>`;
+        lucide.createIcons();
+    }
+</script>
+
+</body>
+</html>
