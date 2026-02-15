@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Premium | Vagner Magazine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fontes Modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Animação de Confetes -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -14,307 +17,354 @@
             --bg: #050505;
             --surface: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
         body {
             background-color: var(--bg);
-            background-image: radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0%, transparent 40%);
-            color: #fff;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 100% 100%, rgba(0, 255, 136, 0.05) 0%, transparent 45%);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Animação de Entrada do Card */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
         .checkout-card {
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             background: var(--surface);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 40px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
-            text-align: center;
+            border-radius: 45px;
+            padding: 50px 40px;
+            box-shadow: 0 50px 120px rgba(0,0,0,0.8);
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
         }
 
-        .product-frame {
-            width: 140px;
-            height: 140px;
+        /* Logótipo do Topo */
+        .store-header { text-align: center; margin-bottom: 40px; }
+        .logo-frame {
+            width: 130px;
+            height: 130px;
             margin: 0 auto 25px;
-            border-radius: 28px;
+            border-radius: 35px;
             background: #111;
             border: 2px solid var(--border);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: rotate(-2deg);
+            transition: 0.4s ease;
+        }
+        .checkout-card:hover .logo-frame { transform: rotate(0deg) scale(1.05); }
+        .logo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        h2 { font-weight: 800; font-size: 1.7rem; letter-spacing: -1px; margin-bottom: 8px; }
+        .legal-badge { 
+            font-size: 0.65rem; 
+            color: var(--text-dim); 
+            line-height: 1.5;
+            max-width: 280px;
+            margin: 0 auto;
         }
 
-        .product-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        /* Campos de Input */
+        .form-group { text-align: left; margin-bottom: 25px; }
+        .label { 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            color: var(--primary); 
+            margin-bottom: 12px; 
+            display: block; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
         }
-
-        h2 { font-weight: 800; font-size: 1.6rem; margin-bottom: 5px; letter-spacing: -1px; }
-        .subtitle { color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-bottom: 30px; display: block; line-height: 1.4; }
-
-        .field { text-align: left; margin-bottom: 22px; }
-        .label { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: block; text-transform: uppercase; letter-spacing: 1.5px; }
         
         input {
             width: 100%;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.02);
             border: 1px solid var(--border);
-            padding: 18px;
-            border-radius: 18px;
+            padding: 20px 25px;
+            border-radius: 20px;
             color: #fff;
             font-size: 1rem;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input:focus { 
+            border-color: var(--primary); 
+            outline: none; 
+            background: rgba(255,255,255,0.06); 
+            box-shadow: 0 0 0 5px rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
         }
 
-        input:focus { border-color: var(--primary); outline: none; background: rgba(255,255,255,0.06); transform: translateY(-2px); }
-
-        .product-selection-info {
-            margin: 15px 0;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
-            background: rgba(255, 255, 255, 0.03);
-            padding: 14px;
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Bloco "Estás a comprar" */
+        .product-info-box {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            gap: 14px;
+            gap: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 18px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            margin: 15px 0 35px;
             text-align: left;
         }
-
-        .mini-item-frame {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+        .product-info-box img {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            object-fit: cover;
             border: 1px solid var(--border);
-            overflow: hidden;
-            flex-shrink: 0;
             background: #111;
         }
+        .product-info-box .text-wrap span { font-size: 0.75rem; color: var(--text-dim); display: block; }
+        .product-info-box .text-wrap strong { font-size: 1.05rem; color: var(--primary); display: block; font-weight: 700; }
 
-        .mini-item-frame img {
+        /* Preço Elevado */
+        .price-container { margin-bottom: 40px; text-align: center; }
+        .price-label { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; display: block; }
+        .price-main { font-size: 3rem; font-weight: 800; color: #fff; letter-spacing: -2px; }
+
+        /* Botão com Efeito Shimmer */
+        .btn-checkout {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-selection-info strong {
-            color: var(--primary);
-            font-weight: 700;
-            display: block;
-            font-size: 0.95rem;
-        }
-
-        .price-section { margin: 25px 0; }
-        .price-display { font-size: 2.5rem; font-weight: 800; color: #fff; display: block; letter-spacing: -1px; }
-
-        .btn-confirm {
-            width: 100%;
-            padding: 22px;
+            padding: 24px;
             background: var(--primary);
             color: #000;
             border: none;
-            border-radius: 20px;
+            border-radius: 24px;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             cursor: pointer;
-            transition: 0.4s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; align-items: center; justify-content: center; gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             position: relative;
             overflow: hidden;
         }
+        .btn-checkout:hover { transform: translateY(-6px); box-shadow: 0 25px 50px var(--primary-glow); filter: brightness(1.1); }
+        .btn-checkout:active { transform: translateY(0); }
+        .btn-checkout:disabled { background: #222; color: #555; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        .btn-confirm:hover { transform: translateY(-5px); box-shadow: 0 20px 40px var(--primary-glow); filter: brightness(1.1); }
-        
-        .loading-icon { width: 22px; height: 22px; border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .footer-secure {
-            margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 8px;
-            color: rgba(255,255,255,0.3); font-size: 0.75rem; font-weight: 600;
-            line-height: 1.4;
+        /* Rodapé Seguro */
+        .secure-footer {
+            margin-top: 35px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.2);
+            line-height: 1.8;
+            font-weight: 500;
         }
+
+        .spinner { width: 22px; height: 22px; border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
 <div class="checkout-card">
-    <div class="product-frame">
-        <img id="main_logo_img" src="" alt="Marca">
-    </div>
-
-    <h2 id="store_name">A Carregar...</h2>
-    <span class="subtitle">
-        Pagamento processado por:<br>
-        Cloudwalk Instituição de pagamentos serviços LTDA.<br>
-        ("InfinitePay") CNPJ 18.189.547/0001-42
-    </span>
-
-    <div class="field">
-        <label class="label">Nome completo</label>
-        <input type="text" id="user_name" placeholder="Ex: Vagner Sousa" autocomplete="name">
-    </div>
-
-    <div class="field">
-        <label class="label">Telefone (WhatsApp)</label>
-        <input type="tel" id="user_phone" placeholder="(00) 0 0000-0000" maxlength="17">
-    </div>
-
-    <div class="product-selection-info" id="product_info_display">
-        <div class="mini-item-frame">
-            <img id="mini_product_img" src="" alt="Produto">
+    <div class="store-header">
+        <div class="logo-frame">
+            <img id="ui_logo" src="" alt="Marca">
         </div>
-        <div>
-            <span style="font-size: 0.75rem;">Estás a comprar:</span>
-            <strong id="product_name_text">...</strong>
+        <h2 id="ui_store_name">A Carregar...</h2>
+        <div class="legal-badge">
+            Cloudwalk Instituição de pagamentos serviços LTDA.<br>
+            ("InfinitePay") CNPJ 18.189.547/0001-42
         </div>
     </div>
 
-    <div class="price-section">
-        <span class="price-display" id="final_price">R$ 0,00</span>
+    <!-- Dados do Cliente -->
+    <div class="form-group">
+        <label class="label">O Teu Nome Completo</label>
+        <input type="text" id="cust_name" placeholder="Como no documento" autocomplete="name">
     </div>
 
-    <button class="btn-confirm" id="btn_submit" onclick="executarCheckout()">
-        CONFIRMAR PAGAMENTO
-        <i data-lucide="arrow-right" size="22"></i>
+    <div class="form-group">
+        <label class="label">WhatsApp para Comprovativo</label>
+        <input type="tel" id="cust_phone" placeholder="(00) 0 0000-0000" maxlength="17">
+    </div>
+
+    <!-- Item em Compra -->
+    <div class="product-info-box">
+        <img id="ui_item_img" src="" alt="Produto">
+        <div class="text-wrap">
+            <span>Estás a comprar:</span>
+            <strong id="ui_item_name">...</strong>
+        </div>
+    </div>
+
+    <!-- Valor Total -->
+    <div class="price-container">
+        <span class="price-label">Valor Total do Pedido</span>
+        <span class="price-main" id="ui_price_display">R$ 0,00</span>
+    </div>
+
+    <!-- Ação -->
+    <button class="btn-checkout" id="btn_submit" onclick="processarPagamento()">
+        PAGAR AGORA
+        <i data-lucide="arrow-right" size="24"></i>
     </button>
 
-    <div class="footer-secure">
-        <i data-lucide="shield-check" size="14"></i>
-        <span>
-            Direitos reservados a Lauriuche Incompany &copy;<br>
-            Pagamento via InfinitePay &copy; 2026
-        </span>
+    <!-- Rodapé -->
+    <div class="secure-footer">
+        <i data-lucide="shield-check" size="14" style="vertical-align: middle;"></i> 
+        SISTEMA DE PAGAMENTO CRIPTOGRAFADO<br>
+        Direitos Reservados &copy; Lauriuche Incompany 2026
     </div>
 </div>
 
 <script>
     // ============================================================
-    // ⚙️ CONFIGURAÇÃO RÁPIDA (EDITE AQUI)
+    // ⚙️ ÁREA DE CONFIGURAÇÃO (EDITE APENAS ESTES VALORES)
     // ============================================================
-    
-    const CONFIG_CHECKOUT = {
-        minhaTag: "lauriuche",                  // Teu handle da InfinitePay (sem o $)
-        nomeExibicao: "Checkout de pagamento",  // Nome que aparece no topo
-        valorEmCentavos: 100000,            // 100 = R$ 1,00 | 100.000.000 = R$ 1.000.000,00
-        quantidadePedida: 1,                    // Quantidade fixa
-        descricaoItem: "E-book Exclusivo",      // Nome do produto
+    const CONFIG = {
+        minhaTag: "lauriuche",                  // Handle InfinitePay (sem o $)
+        tituloLoja: "Vagner Magazine",          // Nome que aparece no topo
+        valorEmCentavos: 10,                    // 100 = R$ 1,00 | 100000000 = R$ 1.000.000,00
+        quantidadeItem: 1,                      // Quantidade fixa do produto
+        nomeDoProduto: "Acesso Vitalício",      // Nome que aparece no checkout
 
-        // 🔗 LINK DE REDIRECIONAMENTO (Para onde o cliente vai após pagar)
-        urlRedirecionamento: "https://vagnermagazine.com/sucesso", 
+        // 🖼️ IMAGENS (Links diretos .jpg ou .png)
+        urlLogoTopo: "https://play-lh.googleusercontent.com/JCYKHXuu2Q6IzhmkW9N4bDX0S8_3XVYnlPtheNcdwlOaSr0TTKJljm3RVexsXkw3_ec",
+        urlMiniaturaProduto: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200",
 
-        urlImagemPrincipal: "https://play-lh.googleusercontent.com/JCYKHXuu2Q6IzhmkW9N4bDX0S8_3XVYnlPtheNcdwlOaSr0TTKJljm3RVexsXkw3_ec",
-        urlImagemMini: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&auto=format" 
+        // 🔗 REDIRECIONAMENTO (Para onde o cliente vai após pagar)
+        urlAposPagamento: "https://wa.me/5599988776655?text=Pagamento+Confirmado!"
     };
-
     // ============================================================
 
-    // Formata o número para o padrão R$ 1.234,56
-    const formatarMoeda = (valor) => {
+    // Formatador de Moeda Profissional (R$ 0.000.000,00)
+    const formatarBRL = (valor) => {
         return valor.toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
     };
 
+    // Inicialização da UI
     document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
-        document.getElementById('main_logo_img').src = CONFIG_CHECKOUT.urlImagemPrincipal;
-        document.getElementById('mini_product_img').src = CONFIG_CHECKOUT.urlImagemMini;
-        document.getElementById('store_name').innerText = CONFIG_CHECKOUT.nomeExibicao;
-        document.getElementById('product_name_text').innerText = CONFIG_CHECKOUT.descricaoItem;
         
-        const total = (CONFIG_CHECKOUT.valorEmCentavos * CONFIG_CHECKOUT.quantidadePedida) / 100;
-        document.getElementById('final_price').innerText = `R$ ${formatarMoeda(total)}`;
+        document.getElementById('ui_logo').src = CONFIG.urlLogoTopo;
+        document.getElementById('ui_item_img').src = CONFIG.urlMiniaturaProduto;
+        document.getElementById('ui_store_name').innerText = CONFIG.tituloLoja;
+        document.getElementById('ui_item_name').innerText = CONFIG.nomeDoProduto;
+        
+        const total = (CONFIG.valorEmCentavos * CONFIG.quantidadeItem) / 100;
+        document.getElementById('ui_price_display').innerText = `R$ ${formatarBRL(total)}`;
 
-        const phoneInput = document.getElementById('user_phone');
+        // Máscara de Telefone Inteligente: (00) 0 0000-0000
+        const phoneInput = document.getElementById('cust_phone');
         phoneInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            let formattedValue = '';
-            if (value.length > 0) {
-                formattedValue = '(' + value.substring(0, 2);
-                if (value.length > 2) {
-                    formattedValue += ') ' + value.substring(2, 3);
-                    if (value.length > 3) {
-                        formattedValue += ' ' + value.substring(3, 7);
-                        if (value.length > 7) {
-                            formattedValue += '-' + value.substring(7, 11);
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.substring(0, 11);
+            let m = "";
+            if (v.length > 0) {
+                m = "(" + v.substring(0, 2);
+                if (v.length > 2) {
+                    m += ") " + v.substring(2, 3);
+                    if (v.length > 3) {
+                        m += " " + v.substring(3, 7);
+                        if (v.length > 7) {
+                            m += "-" + v.substring(7, 11);
                         }
                     }
                 }
             }
-            e.target.value = formattedValue;
+            e.target.value = m;
         });
     });
 
-    async function executarCheckout() {
+    async function processarPagamento() {
         const btn = document.getElementById('btn_submit');
-        const nome = document.getElementById('user_name').value.trim();
-        const fone = document.getElementById('user_phone').value.trim();
+        const nome = document.getElementById('cust_name').value.trim();
+        const fone = document.getElementById('cust_phone').value.trim();
 
-        if (!nome) return alert("Por favor, preencha o seu nome.");
+        if (nome.length < 3) return alert("Por favor, introduza o seu nome completo.");
+        if (fone.length < 14) return alert("Por favor, introduza um WhatsApp válido.");
 
         btn.disabled = true;
-        btn.innerHTML = `<div class="loading-icon"></div> A GERAR LINK...`;
+        btn.innerHTML = `<div class="spinner"></div> A GERAR...`;
 
         const payload = {
-            "handle": CONFIG_CHECKOUT.minhaTag,
+            "handle": CONFIG.minhaTag,
             "order_nsu": "PEDIDO-" + Date.now(),
-            "redirect_url": CONFIG_CHECKOUT.urlRedirecionamento,
+            "redirect_url": CONFIG.urlAposPagamento,
             "customer": {
                 "name": nome,
-                "email": `checkout_${Date.now()}@magazine.com`,
+                "email": `suporte_${Date.now()}@vagnermagazine.com`,
                 "phone_number": fone.replace(/\D/g, '')
             },
             "items": [{
-                "quantity": CONFIG_CHECKOUT.quantidadePedida,
-                "price": CONFIG_CHECKOUT.valorEmCentavos,
-                "description": CONFIG_CHECKOUT.descricaoItem,
-                "image": CONFIG_CHECKOUT.urlImagemMini
+                "quantity": CONFIG.quantidadeItem,
+                "price": CONFIG.valorEmCentavos,
+                "description": CONFIG.nomeDoProduto,
+                "image": CONFIG.urlMiniaturaProduto
             }]
         };
 
-        const apiTarget = 'https://api.infinitepay.io/invoices/public/checkout/links';
-        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(apiTarget);
+        const targetApi = 'https://api.infinitepay.io/invoices/public/checkout/links';
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetApi);
 
         try {
-            const res = await fetch(proxyUrl, {
+            const response = await fetch(proxyUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            const data = await res.json();
+            const data = await response.json();
             
             if (data.url) {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                setTimeout(() => window.location.href = data.url, 1200);
+                // Efeito de Sucesso
+                confetti({
+                    particleCount: 180,
+                    spread: 80,
+                    origin: { y: 0.7 },
+                    colors: ['#00ff88', '#ffffff', '#009955']
+                });
+                
+                btn.innerHTML = `<i data-lucide="check" size="24"></i> PRONTO!`;
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    window.location.href = data.url;
+                }, 1300);
             } else {
-                alert("Erro ao criar link.");
-                resetarBotao();
+                alert("Erro ao criar link de pagamento. Verifica o teu Handle/Tag.");
+                resetBotao();
             }
-        } catch (e) {
-            alert("Falha de conexão.");
-            resetarBotao();
+        } catch (error) {
+            console.error(error);
+            alert("Falha na ligação com o servidor de pagamentos.");
+            resetBotao();
         }
     }
 
-    function resetarBotao() {
+    function resetBotao() {
         const btn = document.getElementById('btn_submit');
         btn.disabled = false;
-        btn.innerHTML = `CONFIRMAR PAGAMENTO <i data-lucide="arrow-right"></i>`;
+        btn.innerHTML = `PAGAR AGORA <i data-lucide="arrow-right" size="24"></i>`;
         lucide.createIcons();
     }
 </script>
