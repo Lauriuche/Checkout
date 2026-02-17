@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucesso! Baixe Seus Projetos | Vagner Magazine</title>
+    <!-- Fontes Modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Animação de Confetes -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --primary-glow: rgba(0, 255, 136, 0.4);
+            --bg: #030303;
+            --surface: #0a0a0a;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-dim: #999999;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de luz ao fundo */
+        .glow-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .thank-you-card {
+            width: 100%;
+            max-width: 550px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 60px 40px;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 15px; }
+        p { color: var(--text-dim); margin-bottom: 40px; line-height: 1.6; }
+
+        .download-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .download-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #fff;
+            transition: 0.3s;
+            text-align: left;
+        }
+
+        .download-btn:hover {
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.05);
+            transform: translateX(5px);
+        }
+
+        .download-btn i {
+            background: #111;
+            padding: 12px;
+            border-radius: 12px;
+            color: var(--primary);
+        }
+
+        .download-btn .info span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn .info strong {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .support-box {
+            background: #111;
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .support-box span { display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 12px; }
+
+        .whatsapp-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+
+        .whatsapp-link:hover { text-decoration: underline; }
+
+        .footer-note {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            .thank-you-card { padding: 40px 20px; border-radius: 35px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="glow-bg"></div>
+
+<div class="thank-you-card">
+    <div class="success-icon">
+        <i data-lucide="party-popper" size="40"></i>
+    </div>
+
+    <h1>Pagamento Confirmado!</h1>
+    <p>Obrigado pela sua compra. Seus arquivos de projetos já estão liberados para download abaixo.</p>
+
+    <div class="download-section">
+        <!-- LINK PARA O PRIMEIRO PDF -->
+        <a href="863638499-300-Projetos-de-Moveis-Industriais.pdf" class="download-btn" download>
+            <i data-lucide="file-text"></i>
+            <div class="info">
+                <span>E-book Vol 1</span>
+                <strong>300 Projetos de Móveis Industriais</strong>
+            </div>
+            <i data-lucide="download" size="18" style="margin-left: auto; background: none; padding: 0;"></i>
+        </a>
+
+        <!-- LINK PARA O SEGUNDO PDF -->
+        <a href="833170293-300-Projetos-Em-Metalon.pdf" class="download-btn" download>
+            <i data-lucide="file-text"></i>
+            <div class="info">
+                <span>E-book Vol 2</span>
+                <strong>300 Projetos Especial Metalon</strong>
+            </div>
+            <i data-lucide="download" size="18" style="margin-left: auto; background: none; padding: 0;"></i>
+        </a>
+    </div>
+
+    <div class="support-box">
+        <span>Precisa de ajuda com o download?</span>
+        <a href="https://wa.me/5599991998153" target="_blank" class="whatsapp-link">
+            <i data-lucide="message-circle"></i>
+            Falar com Suporte
+        </a>
+    </div>
+
+    <div class="footer-note">
+        Vagner Magazine &copy; 2026
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+
+        // Dispara confetes ao carregar
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } 
+            }));
+            confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } 
+            }));
+        }, 250);
+    });
+</script>
+
+</body>
+</html>
+
